@@ -7,8 +7,14 @@ package com.fernando.web.rest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.fernando.ejb.AdmDocumentoSLBean;
+import com.fernando.hmsic.modelo.NegEncuesta;
+import com.fernando.hmsic.util.DynamicMixIn;
 import com.fernando.hmsic.util.UsuarioDTO;
+import java.util.List;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -61,6 +67,55 @@ public class GestionEncuesta {
             ObjectMapper mapper = new ObjectMapper();
 
             response = Response.ok(mapper.writeValueAsString(documentoSLBean.consultarEntidad(objEntidad, pEntidad, pActiva, start, size))).build();
+
+            return response;
+        } catch (JsonProcessingException ex) {
+            Logger.getLogger(GestionEncuesta.class.getName()).log(Level.SEVERE, null, ex);
+            return Response.serverError().build();
+        }
+    }
+
+    @Path("/grabarencuesta")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response grabarEncuesta(String objEncuesta) {
+        Response response;
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+
+            mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+
+            SimpleFilterProvider sfp = new SimpleFilterProvider();
+            sfp.addFilter("filtroDinamico", SimpleBeanPropertyFilter.filterOutAllExcept("encId"));
+
+            response = Response.ok(mapper.
+                    addMixIn(NegEncuesta.class, DynamicMixIn.class).
+                    writer(sfp).
+                    writeValueAsString(documentoSLBean.grabarEncuesta(objEncuesta))).build();
+
+            return response;
+        } catch (JsonProcessingException ex) {
+            Logger.getLogger(GestionEncuesta.class.getName()).log(Level.SEVERE, null, ex);
+            return Response.serverError().build();
+        }
+    }
+
+    @Path("/eliminarencuesta")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response eliminarEncuesta(List<Long> encIds) {
+        Response response;
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+
+            mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+
+            documentoSLBean.eliminarEncuesta(encIds);
+
+            response = Response.ok(mapper.
+                    writeValueAsString(encIds)).build();
 
             return response;
         } catch (JsonProcessingException ex) {

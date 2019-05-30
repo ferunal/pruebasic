@@ -1,22 +1,119 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"          
+      xmlns:f="http://java.sun.com/jsf/core"
+
+      xmlns:icecore="http://www.icefaces.org/icefaces/core"
+      xmlns:ace="http://www.icefaces.org/icefaces/components">
 
     <body>
 
         <ui:composition template="/plantillas/plantilla.xhtml">
 
             <ui:define name="top">
-                top
+                <h:form>
+                    <h:panelGroup  style="right: 20px; float: right; position: absolute; display: block; vertical-align: central; max-height: 500px; text-align: center; width: 350px;top: 2px; border: none;">
+                        <h:outputText value="#{encuestaJSFBean.error}" />
+                    </h:panelGroup>
+                </h:form>
             </ui:define>
 
             <ui:define name="left">
-                left
+                <h:form>
+
+
+                    <h:panelGrid columns="1">
+                        <h:commandLink immediate="true"
+                                       value="Diligenciar"
+                                       actionListener="#{encuestaJSFBean.navegacionLateral_ActionEvent}"
+                                       >
+
+                            <f:attribute name="numPanel" value="1"/>
+                            <f:ajax execute="@this" render="@all"/>
+                        </h:commandLink>    
+
+                        <h:commandLink immediate="true" 
+                                       value="Listar"  
+                                       actionListener="#{encuestaJSFBean.navegacionLateral_ActionEvent}"
+                                       >
+                            <f:attribute name="numPanel" value="2"/>
+                            <ace:ajax execute="@this" render="@all"/>
+                        </h:commandLink> 
+                    </h:panelGrid>
+                </h:form>
             </ui:define>
 
             <ui:define name="content">
-                content
+
+                <h:form>
+
+
+
+                    <h:panelGroup rendered="#{encuestaJSFBean.numPanel==1?true:false}">
+                        <h:panelGrid columns="4">
+                            <h:outputText value="Número de documento"/>
+                            <ace:textEntry value="#{encuestaJSFBean.encuesta.encNumdoc}"/>
+                            <h:outputText value="Email"/>
+                            <ace:textEntry value="#{encuestaJSFBean.encuesta.encEmail}"/>
+                            <h:outputText value="Cometarios"/>
+                            <ace:textAreaEntry value="#{encuestaJSFBean.encuesta.encComentatarios}"/>
+                            <h:outputText value="Marca favorita de PC"/>
+                            <ace:simpleSelectOneMenu value="#{encuestaJSFBean.marcaSel}">
+                                <f:selectItems value="#{encuestaJSFBean.lstItemsMarcas}"/>
+                                <ace:ajax execute="@this" render="@this"/>
+                            </ace:simpleSelectOneMenu>
+
+                        </h:panelGrid>
+                        <ace:pushButton value="GrabarEncuesta" action="#{encuestaJSFBean.guardarEncuesta}"/>
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{encuestaJSFBean.numPanel==2?true:false}">
+                        <ace:dataTable value="#{encuestaJSFBean.lstEncuestaDTOs}" var="item">
+                            <ace:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Sel"/>
+                                </f:facet>
+                                <ace:checkboxButton value="#{item.seleccionado}"/>
+                            </ace:column>
+                            <ace:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Número de documento"/>
+                                </f:facet>
+                                <h:outputText value="#{item.encuesta.encNumdoc}"/>
+                            </ace:column>
+                            <ace:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Email"/>
+                                </f:facet>
+                                <h:outputText value="#{item.encuesta.encEmail}"/>
+                            </ace:column>
+                            <ace:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Cometarios"/>
+                                </f:facet>
+                                <h:outputText value="#{item.encuesta.encComentatarios}"/>
+                            </ace:column>
+                            <ace:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Marca favorita"/>
+                                </f:facet>
+                                <h:outputText value="#{item.encuesta.mrcId.mrcNombre}"/>
+                            </ace:column>                            
+                            <ace:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Fecha respuesta"/>
+                                </f:facet>
+                                <h:outputText value="#{item.encuesta.encFecharesp}">
+                                    <f:convertDateTime pattern="dd-MM-yyyy HH:mm"/>
+                                </h:outputText>
+                            </ace:column>
+                        </ace:dataTable>
+
+                        <ace:pushButton value="Eliminar seleccionado" action="#{encuestaJSFBean.eliminarEncuestas_A}"/>
+                    </h:panelGroup>
+
+                </h:form>
             </ui:define>
 
         </ui:composition>

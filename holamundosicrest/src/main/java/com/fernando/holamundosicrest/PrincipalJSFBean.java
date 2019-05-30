@@ -5,19 +5,18 @@
  */
 package com.fernando.holamundosicrest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fernando.hmsic.modelo.AdmColaborador;
-import com.fernando.hmsic.modelo.RfMarca;
 import com.fernando.hmsic.util.UsuarioDTO;
-import com.fernando.holamundosicrest.rest.client.AdmEncuestaCLN;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.el.ELContext;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import javax.ws.rs.core.Response;
 
 /**
  *
@@ -27,43 +26,40 @@ import javax.ws.rs.core.Response;
 @Named
 public class PrincipalJSFBean extends BaseJSFBean implements Serializable {
 
-    AdmEncuestaCLN admEncuestaCLN = new AdmEncuestaCLN();
-
     private AdmColaborador admColaboradorSession = new AdmColaborador();
-
-    private List<RfMarca> lstMarcas = new ArrayList<>();
 
     private UsuarioDTO usuarioDTO = new UsuarioDTO();
 
-    private void cargarMarcas() {
-
-        lstMarcas = Arrays.asList(admEncuestaCLN.getLstEntidad(new RfMarca(), "RfMarca").readEntity(RfMarca[].class));
-
-    }
-
     @PostConstruct
     public void init() {
-        cargarMarcas();
-
+        error = "";
     }
 
     public String validarColaborador_A() {
         admColaboradorSession = admEncuestaCLN.validarColaborador(usuarioDTO).readEntity(AdmColaborador.class);
         if (admColaboradorSession != null && admColaboradorSession.getColId() != null) {
-            reglaNav = "ingresar";
+            try {
+                FacesContext fc = FacesContext.getCurrentInstance();
+                ELContext elc = fc.getELContext();
+                String beanEncuesta = "encuestaJSFBean";
+                Object objDestJSFBean = elc.getELResolver().getValue(elc, null, beanEncuesta);
+                Class cls = objDestJSFBean.getClass();//
+
+                Method mthdInit = cls.getDeclaredMethod("cargarMarcas", new Class<?>[0]);
+                mthdInit.invoke(objDestJSFBean, new Object[0]);
+                reglaNav = "ingresar";
+            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException ex) {
+                error = "Error al ingresar";
+
+                Logger.getLogger(PrincipalJSFBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
+            error = "Usuario o clave incorrecto";
+
             reglaNav = "";
 
         }
         return reglaNav;
-    }
-
-    public List<RfMarca> getLstMarcas() {
-        return lstMarcas;
-    }
-
-    public void setLstMarcas(List<RfMarca> lstMarcas) {
-        this.lstMarcas = lstMarcas;
     }
 
     public AdmColaborador getAdmColaboradorSession() {

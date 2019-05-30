@@ -49,6 +49,8 @@ public class NegEncuesta implements Serializable {
     @Size(max = 50)
     @Column(name = "enc_numdoc")
     private String encNumdoc;
+    @Column(name = "enc_comentatarios")
+    private String encComentatarios;
     @Size(max = 100)
     @Column(name = "enc_email")
     private String encEmail;
@@ -152,5 +154,13 @@ public class NegEncuesta implements Serializable {
     public String toString() {
         return "com.fernando.holamundosic.modelo.NegEncuesta[ encId=" + encId + " ]";
     }
-    
+
+    public String getEncComentatarios() {
+        return encComentatarios;
+    }
+
+    public void setEncComentatarios(String encComentatarios) {
+        this.encComentatarios = encComentatarios;
+    }
+
 }

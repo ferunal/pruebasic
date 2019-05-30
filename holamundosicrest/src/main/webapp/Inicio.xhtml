@@ -12,7 +12,12 @@
         <ui:composition template="./plantillas/plantilla.xhtml">
 
             <ui:define name="top">
-                top
+
+                <h:panelGroup  style="right: 20px; float: right; position: absolute; display: block; vertical-align: central; max-height: 500px; text-align: center; width: 350px;top: 80px; border: none;">
+                    <h:outputText value="#{encuestaJSFBean.error}" />
+                </h:panelGroup>
+
+
             </ui:define>
 
             <ui:define name="left">
@@ -21,34 +26,36 @@
 
             <ui:define name="content">
                 <h:form>
+
+
                     <h:panelGroup>
-                       
+
                         <h:inputText  value="#{principalJSFBean.usuarioDTO.usuario}" styleClass="username"/>
                         <h:inputSecret  value="#{principalJSFBean.usuarioDTO.clave}" styleClass="password"/>
-                            <h:commandButton   id="btnIngresar"
-                                               action="#{principalJSFBean.validarColaborador_A}"                                                              
-                                               title="Iniciar session"
-                                               styleClass="submit button"
-                                               value="Ingresar">
-                            </h:commandButton>
+                        <h:commandButton   id="btnIngresar"
+                                           action="#{principalJSFBean.validarColaborador_A}"                                                              
+                                           title="Iniciar session"
+                                           styleClass="submit button"
+                                           value="Ingresar">
+                        </h:commandButton>
 
-                            <ace:messages id="idmsg" 
+                        <ace:messages id="idmsg" 
 
-                                           
-                                          showDetail="true"
-                                          redisplay="false"
-                                          showSummary="false"
-                                          globalOnly="true"
-                                          >
-                            </ace:messages>   
-                       
+
+                                      showDetail="true"
+                                      redisplay="false"
+                                      showSummary="false"
+                                      globalOnly="true"
+                                      >
+                        </ace:messages>   
+
                     </h:panelGroup>
 
-
                 </h:form>
+
             </ui:define>
 
         </ui:composition>
-
+     
     </body>
 </html>

@@ -5,7 +5,9 @@
  */
 package com.fernando.holamundosicrest.rest.client;
 
+import com.fernando.hmsic.modelo.NegEncuesta;
 import com.fernando.hmsic.util.UsuarioDTO;
+import java.util.List;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
@@ -47,7 +49,20 @@ public class AdmEncuestaCLN {
                 accept(MediaType.APPLICATION_JSON).
                 post(javax.ws.rs.client.Entity.entity(usuarioDTO, javax.ws.rs.core.MediaType.APPLICATION_JSON), Response.class);
     }
+    
+      public Response grabarEncuesta(NegEncuesta negEncuesta) throws ClientErrorException {
+        return webTarget.path("/grabarencuesta"). request(javax.ws.rs.core.MediaType.APPLICATION_JSON).
+                accept(MediaType.APPLICATION_JSON).
+                post(javax.ws.rs.client.Entity.entity(negEncuesta, javax.ws.rs.core.MediaType.APPLICATION_JSON), Response.class);
+    }
+      
+       public Response eliminarEncuesta(List<Long> negEncuestaIds) throws ClientErrorException {
+        return webTarget.path("/eliminarencuesta"). request(javax.ws.rs.core.MediaType.APPLICATION_JSON).
+                accept(MediaType.APPLICATION_JSON).
+                post(javax.ws.rs.client.Entity.entity(negEncuestaIds, javax.ws.rs.core.MediaType.APPLICATION_JSON), Response.class);
+    }
 
+    
     public void close() {
         client.close();
     }

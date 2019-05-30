@@ -10,11 +10,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fernando.ejb.comportamiento.EntidadActiva;
 import com.fernando.ejb.comportamiento.Ordenar;
 import com.fernando.hmsic.modelo.AdmColaborador;
+import com.fernando.hmsic.modelo.NegEncuesta;
+import com.fernando.hmsic.modelo.RfMarca;
 import com.fernando.hmsic.util.UsuarioDTO;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.LocalBean;
@@ -57,6 +60,31 @@ public class AdmDocumentoSLBean extends BaseEJB {
         }
 
         return admColaborador;
+
+    }
+
+    public NegEncuesta grabarEncuesta(String encuesta) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.setTimeZone(TimeZone.getDefault());
+
+            NegEncuesta pNegEncuesta = mapper.readValue(encuesta, NegEncuesta.class);
+            pNegEncuesta.setMrcId(em.getReference(RfMarca.class, pNegEncuesta.getMrcId().getMrcId()));
+            em.persist(pNegEncuesta);
+            em.flush();
+            return pNegEncuesta;
+        } catch (IOException ex) {
+            Logger.getLogger(AdmDocumentoSLBean.class.getName()).log(Level.SEVERE, null, ex);
+            return new NegEncuesta();
+        }
+
+    }
+
+    public void eliminarEncuesta(List<Long> encuestaIds) {
+        for (Long encuestaId : encuestaIds) {
+            NegEncuesta ne = em.getReference(NegEncuesta.class, encuestaId);
+            em.remove(ne);
+        }
 
     }
 

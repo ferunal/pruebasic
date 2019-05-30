@@ -3,11 +3,9 @@
   <persistence-unit name="Holamundo_PU" transaction-type="JTA">
     <jta-data-source>java:/pgHolamundosic</jta-data-source>
     <class>com.fernando.hmsic.modelo.AdmColaborador</class>
-    <class>com.fernando.hmsic.modelo.NegDocumento</class>
-    <class>com.fernando.hmsic.modelo.NegProcesodocumento</class>
+    <class>com.fernando.hmsic.modelo.NegEncuesta</class>
+    <class>com.fernando.hmsic.modelo.RfMarca</class>
     <class>com.fernando.hmsic.modelo.RfTipodocumento</class>
-    <class>com.fernando.hmsic.modelo.SysProceso</class>
-    <class>com.fernando.hmsic.modelo.SysPropaso</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
     <properties/>

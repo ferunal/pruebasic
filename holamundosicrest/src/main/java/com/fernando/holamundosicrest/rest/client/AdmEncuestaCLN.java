@@ -5,6 +5,7 @@
  */
 package com.fernando.holamundosicrest.rest.client;
 
+import com.fernando.hmsic.util.UsuarioDTO;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
@@ -39,6 +40,12 @@ public class AdmEncuestaCLN {
         return webTarget.path("/consultartabla").queryParam("entidad", tabla). request(javax.ws.rs.core.MediaType.APPLICATION_JSON).
                 accept(MediaType.APPLICATION_JSON).
                 post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), Response.class);
+    }
+    
+    public Response validarColaborador(UsuarioDTO usuarioDTO) throws ClientErrorException {
+        return webTarget.path("/validarusuario"). request(javax.ws.rs.core.MediaType.APPLICATION_JSON).
+                accept(MediaType.APPLICATION_JSON).
+                post(javax.ws.rs.client.Entity.entity(usuarioDTO, javax.ws.rs.core.MediaType.APPLICATION_JSON), Response.class);
     }
 
     public void close() {

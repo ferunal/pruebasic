@@ -27,3 +27,33 @@ a:link:hover, a:visited:hover  {
   font-weight : bold;
   text-decoration : underline;
 }
+
+.clave{
+    width:160px;
+    height:16px;
+    padding-left:30px;
+    margin-bottom:10px;
+    display:block;
+    border:1px solid #bec1c5;
+    box-shadow:inset 0px 1px 4px rgba(0,0,0,.1);
+    font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size:10px;
+    font-weight:400;
+    color:#bfbfbf;
+    background:#fff  url("#{resource[':images/ColeccionIconos-Password.png']}") left no-repeat;
+}
+
+.username {
+    width:160px;
+    height:16px;
+    padding-left:30px;
+    margin-bottom:10px;
+    display:block;
+    border:1px solid #bec1c5;
+    box-shadow:inset 0px 1px 4px rgba(0,0,0,.1);
+    font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size:10px;
+    font-weight:400;
+    color:#bfbfbf;
+    background:#fff url("#{resource[':images/ColeccionIconos-Username.png']}")   left no-repeat !important;
+}

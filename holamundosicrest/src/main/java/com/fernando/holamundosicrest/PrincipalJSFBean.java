@@ -7,6 +7,8 @@ package com.fernando.holamundosicrest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fernando.hmsic.modelo.AdmColaborador;
+import com.fernando.hmsic.modelo.RfMarca;
+import com.fernando.hmsic.util.UsuarioDTO;
 import com.fernando.holamundosicrest.rest.client.AdmEncuestaCLN;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -23,30 +25,61 @@ import javax.ws.rs.core.Response;
  */
 @SessionScoped
 @Named
-public class PrincipalJSFBean implements Serializable {
+public class PrincipalJSFBean extends BaseJSFBean implements Serializable {
 
-    AdmEncuestaCLN admDocumentoCLN = new AdmEncuestaCLN();
+    AdmEncuestaCLN admEncuestaCLN = new AdmEncuestaCLN();
 
-    private List<AdmColaborador> colaboradores = new ArrayList<>();
+    private AdmColaborador admColaboradorSession = new AdmColaborador();
 
-    private void cargarColaboradores() {
+    private List<RfMarca> lstMarcas = new ArrayList<>();
 
-        Response resp = admDocumentoCLN.getLstEntidad("{}", "AdmColaborador");
-        colaboradores = Arrays.asList(admDocumentoCLN.getLstEntidad(new AdmColaborador(), "AdmColaborador").readEntity(AdmColaborador[].class));
+    private UsuarioDTO usuarioDTO = new UsuarioDTO();
+
+    private void cargarMarcas() {
+
+        lstMarcas = Arrays.asList(admEncuestaCLN.getLstEntidad(new RfMarca(), "RfMarca").readEntity(RfMarca[].class));
 
     }
 
     @PostConstruct
     public void init() {
-        cargarColaboradores();
+        cargarMarcas();
+
     }
 
-    public List<AdmColaborador> getColaboradores() {
-        return colaboradores;
+    public String validarColaborador_A() {
+        admColaboradorSession = admEncuestaCLN.validarColaborador(usuarioDTO).readEntity(AdmColaborador.class);
+        if (admColaboradorSession != null && admColaboradorSession.getColId() != null) {
+            reglaNav = "ingresar";
+        } else {
+            reglaNav = "";
+
+        }
+        return reglaNav;
     }
 
-    public void setColaboradores(List<AdmColaborador> colaboradores) {
-        this.colaboradores = colaboradores;
+    public List<RfMarca> getLstMarcas() {
+        return lstMarcas;
+    }
+
+    public void setLstMarcas(List<RfMarca> lstMarcas) {
+        this.lstMarcas = lstMarcas;
+    }
+
+    public AdmColaborador getAdmColaboradorSession() {
+        return admColaboradorSession;
+    }
+
+    public void setAdmColaboradorSession(AdmColaborador admColaboradorSession) {
+        this.admColaboradorSession = admColaboradorSession;
+    }
+
+    public UsuarioDTO getUsuarioDTO() {
+        return usuarioDTO;
+    }
+
+    public void setUsuarioDTO(UsuarioDTO usuarioDTO) {
+        this.usuarioDTO = usuarioDTO;
     }
 
 }

@@ -22,23 +22,26 @@
             <ui:define name="content">
                 <h:form>
                     <h:panelGroup>
-                        <ace:dataTable value="#{principalJSFBean.colaboradores}" var="item"
-                                      rows="10"
-                                       
-                                       paginator="true"
-                                       emptyMessage="No se encontraron registros"
-                                       paginatorPosition="bottom"
-                                       paginatorAlwaysVisible="true"
-                                       paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-                                       currentPageReportTemplate="({startRecord} - {endRecord} de {totalRecords}, Página: {currentPage}/{totalPages})"  
-                                       >
-                            <ace:column headerText="Nombres">
-                                <h:outputText value="#{item.colNombre1} #{item.colNombre2}"/>
-                            </ace:column>
-                            <ace:column headerText="Apellidos">
-                                <h:outputText value="#{item.colApellido1} #{item.colApellido2}"/>
-                            </ace:column>
-                        </ace:dataTable>
+                       
+                        <h:inputText  value="#{principalJSFBean.usuarioDTO.usuario}" styleClass="username"/>
+                        <h:inputSecret  value="#{principalJSFBean.usuarioDTO.clave}" styleClass="password"/>
+                            <h:commandButton   id="btnIngresar"
+                                               action="#{principalJSFBean.validarColaborador_A}"                                                              
+                                               title="Iniciar session"
+                                               styleClass="submit button"
+                                               value="Ingresar">
+                            </h:commandButton>
+
+                            <ace:messages id="idmsg" 
+
+                                           
+                                          showDetail="true"
+                                          redisplay="false"
+                                          showSummary="false"
+                                          globalOnly="true"
+                                          >
+                            </ace:messages>   
+                       
                     </h:panelGroup>
 
 

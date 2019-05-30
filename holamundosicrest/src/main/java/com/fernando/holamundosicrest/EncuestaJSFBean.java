@@ -79,7 +79,7 @@ public class EncuestaJSFBean extends BaseJSFBean implements Serializable {
     }
 
     public void cargarMarcas() {
-
+lstItemsMarcas.clear();
         lstMarcas = Arrays.asList(admEncuestaCLN.getLstEntidad(new RfMarca(), "RfMarca").readEntity(RfMarca[].class));
         lstItemsMarcas.add(new SelectItem(-1, "Seleccione>>"));
         lstItemsMarcas.addAll(lstMarcas.stream().map(e -> new SelectItem(e.getMrcId(), e.getMrcNombre())).collect(Collectors.toList()));

@@ -5,7 +5,6 @@
         <Node id="modulos/Encuesta.xhtml" x="400" y="150" zoom="true"/>
         <Node id="plantillas/plantilla.xhtml" x="662" y="232" zoom="true"/>
         <Node id="Inicio.xhtml" x="135" y="72" zoom="true"/>
-        <Node id="index.html" x="150" y="300" zoom="true"/>
     </Scope>
     <Scope Scope="All Faces Configurations"/>
 </Scene>

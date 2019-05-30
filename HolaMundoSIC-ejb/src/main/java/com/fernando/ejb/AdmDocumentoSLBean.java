@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.Id;
@@ -81,10 +82,13 @@ public class AdmDocumentoSLBean extends BaseEJB {
     }
 
     public void eliminarEncuesta(List<Long> encuestaIds) {
-        for (Long encuestaId : encuestaIds) {
-            NegEncuesta ne = em.getReference(NegEncuesta.class, encuestaId);
-            em.remove(ne);
-        }
+       
+        String strIds = encuestaIds.stream().map(e -> String.valueOf(e)).collect(Collectors.joining(",", "(", ")"));
+         em.createQuery("DELETE FROM NegEncuesta n WHERE n.encId IN" + strIds);
+//        for (Long encuestaId : encuestaIds) {
+//            NegEncuesta ne = em.getReference(NegEncuesta.class, encuestaId);
+//            em.remove(ne);
+//        }
 
     }
 
